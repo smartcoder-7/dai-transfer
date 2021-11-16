@@ -1,3 +1,4 @@
+import { formatEther } from '@ethersproject/units';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Box, Button, Menu, MenuItem } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
@@ -6,9 +7,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import makeStyles from '@mui/styles/makeStyles';
 import { useWeb3React } from '@web3-react/core';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { SUPPORTED_WALLETS } from '../../../constants';
+import useBalance from '../../../hooks/useBalance';
 
 interface ConnectedMenuProps {
   account?: string | null;
@@ -41,6 +43,10 @@ function ConnectedMenu({
 
 export default function Header() {
   const useStyles = makeStyles(() => ({
+    connectedButton: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
     menuButton: {
       marginRight: 20,
     },
@@ -51,6 +57,7 @@ export default function Header() {
 
   const classes = useStyles();
   const { active, account, deactivate, activate } = useWeb3React();
+  const [balance] = useBalance();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -81,8 +88,19 @@ export default function Header() {
 
   const rightElement = active ? (
     <>
-      <Button color="inherit" onClick={handleClick}>
+      <Button
+        color="inherit"
+        onClick={handleClick}
+        className={classes.connectedButton}
+      >
         Connected
+        <span>
+          {balance === null
+            ? 'Error'
+            : balance
+            ? `Ξ${formatEther(balance)}`
+            : ''}
+        </span>
       </Button>
       <ConnectedMenu
         handleClose={handleClose}
@@ -111,7 +129,7 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" color="inherit" className={classes.title}>
-            Test
+            DeFi App
           </Typography>
           {rightElement}
         </Toolbar>

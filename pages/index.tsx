@@ -1,8 +1,13 @@
+import { Container } from '@mui/material';
 import Head from 'next/head';
 
-import Header from '../src/components/global/Header/Header';
+import TransferForm from '../src/components/pages/Home/TransferForm/TransferForm';
 
 function Home() {
+  const onSubmit = (values) => {
+    console.info('values', values);
+  };
+
   return (
     <div>
       <Head>
@@ -11,7 +16,9 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
         <div>welcome</div>
       </Head>
-      <Header />
+      <Container>
+        <TransferForm onSubmit={onSubmit} />
+      </Container>
     </div>
   );
 }

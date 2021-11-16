@@ -6,6 +6,7 @@ import { Web3ReactProvider } from '@web3-react/core';
 import type { AppProps } from 'next/app';
 
 import Web3ReactManager from '../src/components/global/Web3ReactManager/Web3ReactManager';
+import App from '../src/components/modules/App/App';
 import theme from '../src/styles/theme';
 import getLibrary from '../src/utils/getLibrary';
 
@@ -15,7 +16,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Web3ReactManager>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Component {...pageProps} />
+          <App>
+            <Component {...pageProps} />
+          </App>
         </ThemeProvider>
       </Web3ReactManager>
     </Web3ReactProvider>
