@@ -1,5 +1,7 @@
 import Head from 'next/head';
 
+import Header from '../src/components/global/Header/Header';
+
 function Home() {
   return (
     <div>
@@ -9,6 +11,7 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
         <div>welcome</div>
       </Head>
+      <Header />
     </div>
   );
 }
