@@ -1,3 +1,4 @@
+import { Box, Typography } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 import { ReactNode } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -10,6 +11,15 @@ interface AppProps {
   children: ReactNode;
 }
 
+function FallbackScreen() {
+  return (
+    <Box>
+      <Typography variant="h3" color="error">
+        Something went wrong!
+      </Typography>
+    </Box>
+  );
+}
 function App({ children }: AppProps) {
   const useStyles = makeStyles(() =>
     createStyles({
@@ -38,7 +48,7 @@ function App({ children }: AppProps) {
 
   return (
     <Provider store={store}>
-      <ErrorBoundary FallbackComponent={() => <div>Something went wrong!</div>}>
+      <ErrorBoundary FallbackComponent={FallbackScreen}>
         <Layout>{children}</Layout>
       </ErrorBoundary>
     </Provider>

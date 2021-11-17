@@ -1,9 +1,14 @@
 import { formatEther } from '@ethersproject/units';
 import { Box } from '@mui/material';
 import { useWeb3React } from '@web3-react/core';
+import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
 
+import { backendGetTokenPrices } from '../src/backend/getTokenPrices';
 import Meta from '../src/components/global/Meta/Meta';
+import PriceStack, {
+  TokenPrice,
+} from '../src/components/pages/Home/PriceStack/PriceStack';
 import TransferForm, {
   FormValues as TransferFormValues,
 } from '../src/components/pages/Home/TransferForm/TransferForm';
@@ -17,7 +22,9 @@ import {
 } from '../src/state/transfer/actions';
 import { getProviderOrSigner } from '../src/utils/contract';
 
-function Home() {
+type Props = Record<string, Record<string, number>>;
+
+function Home(props: Props) {
   const { library, account } = useWeb3React();
   const dispatch = useAppDispatch();
   const { daiBalance } = useAppSelector((state) => state.transfer);
@@ -27,6 +34,13 @@ function Home() {
 
   const providerOrSigner = getProviderOrSigner(library, account);
   const daiWrapper = new ERC20Wrapper(DAI_ADDRESS, providerOrSigner);
+
+  const tokenPriceList = Object.entries(props).map(([key, value]) => {
+    return {
+      name: key,
+      price: value.usd + '',
+    } as TokenPrice;
+  });
 
   const onSubmit = async (values: TransferFormValues) => {
     setIsPending(true);
@@ -79,6 +93,7 @@ function Home() {
         title="Defi Dapp"
         metaDescription="dai transfer"
       />
+      <PriceStack tokenPriceList={tokenPriceList} />
       <TransferForm
         onSubmit={onSubmit}
         daiBalance={daiBalance}
@@ -88,5 +103,21 @@ function Home() {
     </Box>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const repsonse = await backendGetTokenPrices({
+    baseUrl: 'https://api.coingecko.com/api/v3/simple/price',
+    query: {
+      ids: 'dai,ethereum',
+      vs_currencies: 'usd',
+    },
+  });
+
+  return {
+    props: {
+      ...repsonse,
+    },
+  };
+};
 
 export default Home;

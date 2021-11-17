@@ -25,6 +25,7 @@ function Layout({ children }: LayoutProps) {
       flexDirection: 'column',
       height: 'calc(100% - 80px)',
       justifyContent: 'center',
+      position: 'relative',
     },
   }));
 
