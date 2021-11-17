@@ -4,7 +4,7 @@ import { injected } from '../lib/connectors';
 
 export const NetworkContextName = 'next-dai-test';
 export const DAI_ADDRESS = '0xaD6D458402F60fD3Bd25163575031ACDce07538D';
-
+export const COINBASE_API_URL = 'https://api.coingecko.com/api/v3/simple/price';
 export interface WalletInfo {
   color: string;
   connector?: AbstractConnector;
