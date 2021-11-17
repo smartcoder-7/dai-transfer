@@ -6,8 +6,8 @@ import { injected } from '../lib/connectors';
 export default function useInactiveListener(suppress = false) {
   const { active, error, activate } = useWeb3React();
 
-  useEffect((): any => {
-    const { ethereum } = window as any;
+  useEffect(() => {
+    const { ethereum } = window;
     if (ethereum && ethereum.on && !active && !error && !suppress) {
       const handleConnect = () => {
         console.info("Handling 'connect' event");

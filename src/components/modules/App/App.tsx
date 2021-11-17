@@ -1,7 +1,8 @@
-import { Box } from '@mui/system';
 import { ReactNode } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import { Provider } from 'react-redux';
 
+import { store } from '../../../state/store';
 import Layout from '../../global/Layout/Layout';
 
 interface AppProps {
@@ -10,11 +11,11 @@ interface AppProps {
 
 function App({ children }: AppProps) {
   return (
-    <Box>
+    <Provider store={store}>
       <ErrorBoundary FallbackComponent={() => <div>Error</div>}>
         <Layout>{children}</Layout>
       </ErrorBoundary>
-    </Box>
+    </Provider>
   );
 }
 

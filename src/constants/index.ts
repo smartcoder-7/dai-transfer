@@ -2,7 +2,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector';
 
 import { injected } from '../lib/connectors';
 
-export const NetworkContextName = 'next-dai';
+export const NetworkContextName = 'next-dai-test';
 
 export interface WalletInfo {
   color: string;

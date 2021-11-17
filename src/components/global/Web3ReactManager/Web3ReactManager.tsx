@@ -1,10 +1,10 @@
 import { useWeb3React } from '@web3-react/core';
 import { useEffect, useState } from 'react';
 
+import { NetworkContextName } from '../../../constants';
 import useEagerConnect from '../../../hooks/useEagerConnector';
 import useInactiveListener from '../../../hooks/useInactiveListener';
 import { connectorsByName } from '../../../lib/connectors';
-import getErrorMessage from '../../../utils/getErrorMessage';
 
 export default function Web3ReactManager({
   children,
@@ -16,7 +16,7 @@ export default function Web3ReactManager({
     active: networkActive,
     error: networkError,
     activate: activateNetwork,
-  } = useWeb3React();
+  } = useWeb3React(NetworkContextName);
 
   // try to eagerly connect to an injected provider, if it exists and has granted access already
   const triedEager = useEagerConnect();
@@ -52,7 +52,7 @@ export default function Web3ReactManager({
   if (!active && networkError) {
     return (
       <div>
-        <div>{getErrorMessage(networkError)}</div>
+        <div>{'unknown error'}</div>
       </div>
     );
   }
