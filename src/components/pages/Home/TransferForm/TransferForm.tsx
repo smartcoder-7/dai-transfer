@@ -26,12 +26,6 @@ const initValues: FormValues = {
   [TransferFormField.RECIPIEINT_ADDRESS]: '',
 };
 
-/**
- *
- * @TODO input validation
- *
- */
-
 function TransferForm({
   onSubmit,
   daiBalance,
@@ -39,12 +33,17 @@ function TransferForm({
   isPending,
 }: ExchangeFormProps) {
   const useStyles = makeStyles(() => ({
+    ctaWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      '& button': {
+        marginTop: 20,
+        marginBottom: 20,
+      },
+    },
     root: {
       display: 'flex',
       flexDirection: 'column',
-    },
-    button: {
-      marginTop: 15,
     },
   }));
 
@@ -113,25 +112,21 @@ function TransferForm({
         }
         error={!!errors[TransferFormField.RECIPIEINT_ADDRESS]}
       />
-      <Button
-        onClick={handleSubmit}
-        variant="contained"
-        className={classes.button}
-        disabled={isPending}
-      >
-        Send
-      </Button>
-      {txHash && (
-        <Button
-          variant="contained"
-          className={classes.button}
-          component={Link}
-          href={`https://ropsten.etherscan.io/tx/${txHash}`}
-          target="_blank"
-        >
-          View on Etherscan
+      <Box className={classes.ctaWrapper}>
+        <Button onClick={handleSubmit} variant="contained" disabled={isPending}>
+          Send
         </Button>
-      )}
+        {txHash && (
+          <Button
+            variant="contained"
+            component={Link}
+            href={`https://ropsten.etherscan.io/tx/${txHash}`}
+            target="_blank"
+          >
+            View on Etherscan
+          </Button>
+        )}
+      </Box>
     </Box>
   );
 }

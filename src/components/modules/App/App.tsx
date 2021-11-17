@@ -1,3 +1,4 @@
+import { createStyles, makeStyles } from '@mui/styles';
 import { ReactNode } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Provider } from 'react-redux';
@@ -10,9 +11,34 @@ interface AppProps {
 }
 
 function App({ children }: AppProps) {
+  const useStyles = makeStyles(() =>
+    createStyles({
+      '@global': {
+        '*': {
+          boxSizing: 'border-box',
+          margin: 0,
+          padding: 0,
+        },
+        html: {
+          height: '100%',
+          width: '100%',
+        },
+        body: {
+          height: '100%',
+          width: '100%',
+        },
+        '#__next': {
+          height: '100%',
+          width: '100%',
+        },
+      },
+    }),
+  );
+  useStyles();
+
   return (
     <Provider store={store}>
-      <ErrorBoundary FallbackComponent={() => <div>Error</div>}>
+      <ErrorBoundary FallbackComponent={() => <div>Something went wrong!</div>}>
         <Layout>{children}</Layout>
       </ErrorBoundary>
     </Provider>

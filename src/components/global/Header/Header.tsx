@@ -1,4 +1,3 @@
-import { formatEther } from '@ethersproject/units';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
@@ -15,7 +14,8 @@ import { useWeb3React } from '@web3-react/core';
 import { useEffect, useState } from 'react';
 
 import { SUPPORTED_WALLETS } from '../../../constants';
-import useBalance from '../../../hooks/useBalance';
+import { useAppSelector } from '../../../hooks/redux-hook';
+import { shortenAddress } from '../../../utils/address';
 
 interface ConnectedMenuProps {
   account?: string | null;
@@ -62,7 +62,8 @@ export default function Header() {
 
   const classes = useStyles();
   const { active, account, deactivate, activate } = useWeb3React();
-  const [balance] = useBalance();
+  const { ethBalance } = useAppSelector((state) => state.transfer);
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -99,20 +100,14 @@ export default function Header() {
         className={classes.connectedButton}
       >
         Connected
-        <span>
-          {balance === null
-            ? 'Error'
-            : balance
-            ? `Ξ${formatEther(balance)}`
-            : ''}
-        </span>
+        <span>{ethBalance === '' ? null : `Ξ${ethBalance}`}</span>
       </Button>
       <ConnectedMenu
         handleClose={handleClose}
         id="connected-menu"
         anchorEl={anchorEl}
         handleDisconnect={handleDisconnect}
-        account={account}
+        account={shortenAddress(account, 9)}
       />
     </>
   ) : (
